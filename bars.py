@@ -12,37 +12,23 @@ def load_data(filepath):
 
 
 def get_biggest_bar(bars):
-    biggest_bar = None
-    max_seats_count = 0
-    for bar in bars:
-        if int(bar["SeatsCount"]) > max_seats_count:
-            max_seats_count = int(bar["SeatsCount"])
-            biggest_bar = bar["Name"]
-    return biggest_bar
+    biggest_bar = max(bars, key=lambda bar: int(bar["SeatsCount"]))
+    return biggest_bar["Name"]
 
 
 def get_smallest_bar(bars):
-    smallest_bar = None
-    min_seats_count = float("inf")
-    for bar in bars:
-        if int(bar["SeatsCount"]) < min_seats_count:
-            min_seats_count = int(bar["SeatsCount"])
-            smallest_bar = bar["Name"]
-    return smallest_bar
+    smallest_bar = min(bars, key=lambda bar: int(bar["SeatsCount"]))
+    return smallest_bar["Name"]
 
 
 def get_closest_bar(bars, longitude, latitude):
     # Принимаем, что в пределах Мщсквы поверхность Земли плоская.
     # Тогда долгота и широту можно использовать, как декартовы координаты
-    closest_bar = None
-    min_distance = float("inf")
-    for bar in bars:
+    def distance(bar):
         bar_longitude, bar_latitude = bar["geoData"]["coordinates"]
-        distance = math.sqrt((longitude - bar_longitude) ** 2 + (latitude - bar_latitude) ** 2)
-        if distance < min_distance:
-            min_distance = distance
-            closest_bar = bar["Name"]
-    return closest_bar
+        return math.sqrt((longitude - bar_longitude) ** 2 + (latitude - bar_latitude) ** 2)
+    closest_bar = min(bars, key=distance)
+    return closest_bar["Name"]
 
 
 if __name__ == '__main__':
