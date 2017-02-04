@@ -12,23 +12,22 @@ def load_data(filepath):
 
 
 def get_biggest_bar(bars):
-    biggest_bar = max(bars, key=lambda bar: int(bar["SeatsCount"]))
-    return biggest_bar["Name"]
+    return max(bars, key=lambda bar: int(bar["SeatsCount"]))
 
 
 def get_smallest_bar(bars):
-    smallest_bar = min(bars, key=lambda bar: int(bar["SeatsCount"]))
-    return smallest_bar["Name"]
+    return min(bars, key=lambda bar: int(bar["SeatsCount"]))
 
 
 def get_closest_bar(bars, longitude, latitude):
     # Принимаем, что в пределах Мщсквы поверхность Земли плоская.
     # Тогда долгота и широту можно использовать, как декартовы координаты
+
     def distance(bar):
         bar_longitude, bar_latitude = bar["geoData"]["coordinates"]
         return math.sqrt((longitude - bar_longitude) ** 2 + (latitude - bar_latitude) ** 2)
-    closest_bar = min(bars, key=distance)
-    return closest_bar["Name"]
+
+    return min(bars, key=distance)
 
 
 if __name__ == '__main__':
@@ -44,9 +43,9 @@ if __name__ == '__main__':
                 sys.exit()
         else:
             break
-    print("Cамый большой бар: %s" % get_biggest_bar(bars))
-    print("Cамый маленький бар: %s" % get_smallest_bar(bars))
+    print("Cамый большой бар: %s" % get_biggest_bar(bars)["Name"])
+    print("Cамый маленький бар: %s" % get_smallest_bar(bars)["Name"])
     print("Определение ближайшего бара.")
     longitude = float(input("    Введите вашу текущую долготу: ").strip())
     latitude = float(input("    Введите вашу текущую широту: ").strip())
-    print("Cамый близкий бар: %s" % get_closest_bar(bars, longitude, latitude))
+    print("Cамый близкий бар: %s" % get_closest_bar(bars, longitude, latitude)["Name"])
