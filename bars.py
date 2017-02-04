@@ -31,18 +31,16 @@ def get_closest_bar(bars, longitude, latitude):
 
 
 if __name__ == '__main__':
-    print("Программа определяет самый большой, самый маленький и самый близкий бар.")
-    while(True):
-        bars_file = input("Введите имя файла с данными о барах: ")
-        print("Чтение информации из файла %s ..." % bars_file)
-        bars = load_data(bars_file)
-        if bars is None:
-            user_input = input("Прочитать данные не удалось. Повторить ввод имени файла? (y/n) ")
-            if user_input.strip().lower() != "y":
-                print("Выход из программы.")
-                sys.exit()
-        else:
-            break
+    args = sys.argv[1:]
+    if not args:
+        print("Usage: python bars.py filepath")
+        sys.exit(2)
+
+    bars = load_data(args[0])
+    if bars is None:
+        print("Прочитать данные не удалось. Выход из программы.")
+        sys.exit(1)
+
     print("Cамый большой бар: %s" % get_biggest_bar(bars)["Name"])
     print("Cамый маленький бар: %s" % get_smallest_bar(bars)["Name"])
     print("Определение ближайшего бара.")
