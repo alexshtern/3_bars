@@ -1,14 +1,14 @@
 import sys
+import os
 import json
 import math
 
 
 def load_data(filepath):
-    try:
-        bars = json.load(open(filepath, 'r'))
-    except:
-        bars = None
-    return bars
+    if not os.path.exists(filepath):
+        return None
+    with open(filepath, 'r') as file_handler:
+        return json.load(file_handler)
 
 
 def get_biggest_bar(bars):
